@@ -31,7 +31,7 @@ public class TestActivity extends AppCompatActivity {
     int problemsnum = 0;
     ArrayList<Problem> problems;
     TextView exampleTextView;
-    ImageView exampleImageView;
+    static ImageView exampleImageView;
     EditText answerEditText;
     Button exampleButton;
     TextToSpeech tts;
@@ -234,10 +234,10 @@ public class TestActivity extends AppCompatActivity {
                                 tts.speak(str, TextToSpeech.QUEUE_FLUSH, null);//첫 매개변수: 문장   두번째 매개변수:Flush 기존의 음성 출력 끝음 Add: 기존의 음성출력을 이어서 출력
                                 String imagename = problems.get(num1-1).url;
                                 answerEditText.setText(imagename);
-                                is = am.open(imagename+".png");
+                                is = am.open("Pencil.png");
                                 Bitmap bm= BitmapFactory.decodeStream(is);
                                 exampleImageView.setImageBitmap(bm);
-                                exampleImageView.setImageDrawable(Drawable.createFromStream(is,null));
+                                //exampleImageView.setImageDrawable(Drawable.createFromStream(is,null));
                                 is.close();
                                 problemsnum++;
                                 break;
