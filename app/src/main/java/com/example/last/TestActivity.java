@@ -98,22 +98,12 @@ public class TestActivity extends AppCompatActivity {
                 town=buffer1[i];
             i++;
         }
-        if(buffer1[1].equals("강원도")){
-            Log.d("TAGdwsfdfdgdg", "buffer1: "+"asdfasdf");
-        }
-        Log.d("TAG1", "address: "+state+city+town);
-        for(i=0;i<buffer1.length;i++){//buffer[
-            Log.d("TAG1", "Buffer: "+buffer1[i]);
-        }
 
-
-        Log.d("TAG1", "address: "+address);
         // 캘린더 객체로  5번까지 답 생성 하기 .
         Calendar calendar = new GregorianCalendar(Locale.KOREA);
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH) + 1;
         day = calendar.get(Calendar.DAY_OF_MONTH);
-        Log.d("TAGQ@EAd", "day: "+day);
         week = calendar.get(Calendar.DAY_OF_WEEK);
 
 
@@ -162,7 +152,6 @@ public class TestActivity extends AppCompatActivity {
             while ((teasd=br.readLine()) != null) {
                 stringBuilder.append(teasd);
             }
-            Log.d("TAG1", "string : " + stringBuilder);
 
 
             tokens = new StringTokenizer(stringBuilder.toString(), "*");
@@ -215,22 +204,18 @@ public class TestActivity extends AppCompatActivity {
         exampleTextView.setText(problems.get(problemsnum).num+"."+problems.get(problemsnum).example);//첫번째 문제의 문제 출력
 
 
-
-
-        Log.d("TAG1", "state : " + "123"+state+"123");
-        Log.d("TAG1", "city : " + "123"+city+"123");
-        Log.d("TAG1", "town : " + "123"+town+"!23");
-
-
         exampleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    Log.d("TAG1", "count : " + problemsnum);
-                    Log.d("TAG1", "score : " + score);
-                    if (problemsnum < problems.size()) {
+
+                    if (problemsnum < problems.size()-1) {
                         String strnum = problems.get(problemsnum).num;
                         int num1 = Integer.parseInt(strnum);
+                        Log.d("TAG", "problemsnum: "+problemsnum);
+                        Log.d("TAG", "problems.size(): "+problems.size());
+                        Log.d("TAG", "num1: "+num1);
+                        Log.d("TAG", "score1: "+score);
                         switch (num1) {
                             case 1:
                                 if (!answerEditText.getText().toString().equals("")&&Integer.parseInt(answerEditText.getText().toString())==year) {
@@ -289,7 +274,6 @@ public class TestActivity extends AppCompatActivity {
                             case 8:
                                 if(!answerEditText.getText().toString().equals("")&&(answerEditText.getText().toString().equals(state))||(answerEditText.getText().toString().equals(city))||(answerEditText.getText().toString().equals(town)))
                                     score += 1; //1번문제를 맞췄을시
-                                Log.d("TAG1", "sasdfasdf : "+problems.get(problemsnum).example);
                                 problemsnum++;
                                 answerEditText.setText("");    //답맞는지 확인후 문제를 바꿔준다 .
                                 exampleTextView.setText((num1+1) +"." + problems.get(problemsnum).example);
@@ -312,7 +296,7 @@ public class TestActivity extends AppCompatActivity {
                                 tts.speak(str, TextToSpeech.QUEUE_FLUSH, null);//첫 매개변수: 문장   두번째 매개변수:Flush 기존의 음성 출력 끝음 Add: 기존의 음성출력을 이어서 출력
                                 break;
                             case 13:
-
+                                exampleButton.setEnabled(false);//버튼 비활성화
                                 if(!answerEditText.getText().toString().equals("")&&
                                         (Integer.parseInt(answerEditText.getText().toString())==Integer.parseInt(problems.get(problemsnum).answer)))
                                     score += 1; //9번 정답 맞는지 확인하기 .
@@ -320,6 +304,7 @@ public class TestActivity extends AppCompatActivity {
                                 answerEditText.setText("");
                                 problemsnum++;
 
+                                answerEditText.setText("호출된 단어를 다 듣고 따라 말하십시오 그 후에 버튼이 활성화됩니다.ㄴ");
                                 exampleTextView.setText((num1+1) +"." + problems.get(problemsnum).example);
                                 str = problems.get(problemsnum).example;
                                 str += "단어가 출력됩니다. 집중하세요.  " + problems.get(problemsnum).answer;
@@ -331,8 +316,9 @@ public class TestActivity extends AppCompatActivity {
                                         SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
                                         speechRecognizer.setRecognitionListener(listener);
                                         speechRecognizer.startListening(intent);
+                                        exampleButton.setEnabled(true);//버튼활성화
                                     }
-                                },19000);
+                                },18500);
 
                                 break;
                             case 14:
@@ -342,44 +328,58 @@ public class TestActivity extends AppCompatActivity {
                                 int i=0;
                                 while(tokens.hasMoreTokens()){
                                     buffer[i] = tokens.nextToken();
-                                    Log.d("TAG", "buffer: "+ "dasddas"+buffer[i]+"dasdasdada");
                                     i++;
                                 }
-                                Log.d("TAG", "buffersize: "+buffer.length);
                                 for(i = 0; i<buffer.length;i++){
                                     if(speak==null)//음성인식을 못할경우
                                         continue;
                                     else if(speak.contains(buffer[i])){//무조건 음성호출을 입력받아야하고 안받고 버튼을 누르면 오류가 생김
                                         score+=1;
-                                        Log.d("TAG", "score12323213131: "+score);
-                                        Log.d("TAG", "buffer12313213131: "+buffer[i]);
                                     }
                                 }
 
                                 problemsnum++;
-
+                                answerEditText.setText("");
                                 exampleTextView.setText((num1+1) +"." + problems.get(problemsnum).example);
                                 str = problems.get(problemsnum).example;
-                                String resName="@drawable/"+problems.get(problemsnum).url;
-                                int resID = getResources().getIdentifier(resName,"drawable",getPackageName());
-                                Log.d("TAG", "url: "+problems.get(problemsnum).url);
-                                exampleImageView.setImageResource(resID);
+
+                                is = am.open(problems.get(problemsnum).url+".png");
+                                Bitmap bm= BitmapFactory.decodeStream(is);
+                                exampleImageView.setImageBitmap(bm);
+
                                 tts.speak(str, TextToSpeech.QUEUE_FLUSH, null);//첫 매개변수: 문장   두번째 매개변수:Flush 기존의 음성 출력 끝음 Add: 기존의 음성출력을 이어서 출력
+                                break;
                             case 15:
                                 if(!answerEditText.getText().toString().equals("")&&
                                         (answerEditText.getText().toString().equals(problems.get(problemsnum).answer)))
                                     score += 1;
-
-                                Log.d("TAG", "answerdsasdahsodhasndasnodsa: "+problems.get(problemsnum).answer);
+                                Log.d("TAG", "answer1: "+problems.get(problemsnum).answer);
                                 problemsnum++;
-                            case 16:
+                                answerEditText.setText("");
+                                exampleTextView.setText((num1+1) +"." + problems.get(problemsnum).example);
+                                str = problems.get(problemsnum).example;
+                                tts.speak(str, TextToSpeech.QUEUE_FLUSH, null);//첫 매개변수: 문장   두번째 매개변수:Flush 기존의 음성 출력 끝음 Add: 기존의 음성출력을 이어서 출력
 
+                                is = am.open(problems.get(problemsnum).url+".png");
+                                bm= BitmapFactory.decodeStream(is);
+                                exampleImageView.setImageBitmap(bm);
+                                break;
+                            case 16:
+                                if(!answerEditText.getText().toString().equals("")&&
+                                        (answerEditText.getText().toString().equals(problems.get(problemsnum).answer)))
+                                    score+=1;
+                                Log.d("TAG", "answer2: "+problems.get(problemsnum).answer);
+                                Log.d("TAG", "score2: "+score);
+                                problemsnum++;
+                                break;
                         }
                     } else {
                         Intent loginIntent = new Intent(TestActivity.this, ResultActivity.class);
                         startActivity(loginIntent);
                     }
                 } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -467,8 +467,6 @@ public class TestActivity extends AppCompatActivity {
             ArrayList<String> list = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);//사용자가 말한 데이터를 ArrayList에 저장
             speak = list.get(0);//사용자의 말을 음성인식한 데이터를 String 형 speak변수에 저장
             speak = speak.replaceAll(" ","");// 사용자가 말한 문자열이 띄어쓰기가 있으면 공백 제거
-            Log.d("TAG", "strlength: "+speak.length());
-            Log.d("TAG", "Speak: "+speak);
         }
 
         @Override
@@ -498,9 +496,6 @@ public class TestActivity extends AppCompatActivity {
             if(location!=null){
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
-
-                Log.d("TAG!", "latitude1: "+latitude);//현재 내위치(갱신 x)
-                Log.d("TAG!", "longitude1: "+longitude);//현재 내위치(갱신 x)
             }
         }catch (SecurityException e){
             e.printStackTrace();
@@ -513,8 +508,6 @@ public class TestActivity extends AppCompatActivity {
             Double latitude = location.getLatitude();
             Double longitude = location.getLongitude();
 
-            Log.d("TAG!", "latitude2: "+latitude);
-            Log.d("TAG!", "longitude2: "+longitude);
         }
 
         @Override
@@ -541,8 +534,7 @@ public class TestActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(address==null||address.size()==0)
-            Log.d("TAG1", "해당 위치에 주소가 존재 하지 않습니다.");
+
         Address address1 = address.get(0);
         return address1.getAddressLine(0).toString();
     }
