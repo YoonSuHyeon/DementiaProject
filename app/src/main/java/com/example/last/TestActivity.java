@@ -181,11 +181,6 @@ public class TestActivity extends AppCompatActivity {
             }
         }
 
-
-       /* if (!problems.get(problemsnum).url.equals("null")) {
-            //problems.get(1).url  이미지넣기
-        }*/
-
         tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
