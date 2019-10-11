@@ -14,7 +14,6 @@ public class Problem {
 
     String url;
     String num;
-
      public Problem(String example, String answer, String url,String num) {
          this.example = example;
          this.answer = answer;
